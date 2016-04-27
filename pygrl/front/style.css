@@ -1,0 +1,12 @@
+.userList ul.container {
+  width: 100%;
+}
+
+.userList ul li {
+  list-style-type: none;
+}
+
+.user img {
+  width: 175px;
+  height: 175px;
+}
