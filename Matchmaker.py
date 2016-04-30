@@ -1,5 +1,4 @@
 import pynder
-import facebook
 from Match import  Match
 from Human import Human
 
@@ -7,7 +6,7 @@ from Human import Human
 # 1. We find the auth_token by going to this address BUTTT:: https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token
 # 2. BUTT... Before the url goes away really fast copy and paste the address bar after you hit enter.
 #. 3. tHE auth token expires
-auth_token = 'CAAGm0PX4ZCpsBAM2FAlAv7Okmw0fDtZATbNqfcePlxgmedFJh0omZCTJVGA7zWgEyX6idru1btNXW9WODEPvyIArPxIBYKVCHsMpNzKXjLhWyVY9bPsYSWS1ZCBoRvt8QR9rk7sfNRGF9C9WcdgZBi1FMlqurTKUT3KTVqw92Q5RAwOsiX23k9l9VRQoXfVz4YmMkQeLkPFZAg2hIlgkTw'
+auth_token = 'EAAGm0PX4ZCpsBALmMUDGO9DpZCnQ2zoJU0r7gWUM9ZBTuFPCqdl2D0BqpQ8WwwMU8bjIzoLeK0sh4vdciFO8oOmWiEZBEHYVM7srbEA7K4bCrxyDF6G7LnUvkQK7SPLw9TjTlsQn6DlbxZAkYZBo52F2aQYPZByi7Qb1ZC1cTRXVCAZDZD'
 user = 'jackiehorowitz'
 
 
@@ -19,9 +18,7 @@ class Matchmaker:
         self.matches = self.update_matches()
         self.current_user = Human(self.session.profile)
 
-    # matches[2].get_photos()
-       # print(matches[0].user.birth_date)
-       # print(matchmaker.get_bios(matches, 30))
+
 
     def update_matches(self):
         matches = []
@@ -31,8 +28,12 @@ class Matchmaker:
         return matches
 
     def get_bios(self, matches, cnt):
-        m = [n.user.bio for n in matches if
-             n != None and n.user != None and n.user.bio != None and len(n.user.bio.split(' ')) > cnt]
+        m = [n.bio.strip() for n in matches if
+             n != None and n != None and n.bio != None and len(n.bio.split(' ')) > cnt]
         return m
 
-
+if __name__ == '__main__':
+    matchmaker = Matchmaker()
+    print(matchmaker.matches[2].photos)
+    print(matchmaker.matches[0].birth_date)
+    print(matchmaker.get_bios(matchmaker.matches, 30))
