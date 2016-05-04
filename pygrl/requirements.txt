@@ -1,7 +1,0 @@
-pynder
-lxml
-django
-pyopenssl
-ndg-httpsclient
-pyasn1
-requests
