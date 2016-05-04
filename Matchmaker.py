@@ -1,14 +1,15 @@
 import pynder
-from Match import  Match
+from Match import Match
 from Human import Human
 import json
 from watson_developer_cloud import ToneAnalyzerV3Beta
+import numpy as np
 
 # Unfortunately, we have to do this manually for now...
 # 1. We find the auth_token by going to this address BUTTT:: https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token
 # 2. BUTT... Before the url goes away really fast copy and paste the address bar after you hit enter.
-#. 3. tHE auth token expires
-auth_token = 'EAAGm0PX4ZCpsBAOdj5j1xFMYRpt7xOfcNVsSJd5sbR9yXETjw2W6VBaZCU4QQHKz7JZB0paPrsOOTZAKAhuAOwe4sHiBK455NZCaps24sIaZBB78QiUQUlX1NmyQR1GxZBbEX0sPZCmwT808FZAfyZBQYlbDxUroN1bDoKqPsr4hBd4gZDZD'
+# . 3. tHE auth token expires
+auth_token = 'EAAGm0PX4ZCpsBACNZB4EZCiJNvZA6ZBiw9zZBF3jqZBDJ37rz6wZBOdTClZAIsVTOKEGnuVorXWdhfJyA1716JkMJ5SVJ7aHgz7qDlJgKO4M7Nbn28M4ZCQ0f8R00ZCDFDZAPXOmP8dHX4R6sIZAU21khK1aFQr0kIZAWhP9AHlUfSREk3nAZDZD'
 user = 'jackiehorowitz'
 
 
@@ -20,19 +21,34 @@ class Matchmaker:
         self.matches = self.update_matches()
         self.current_user = Human(self.session.profile)
 
-
-
     def update_matches(self):
         matches = []
         for m in self.session.matches():
-            if m !=None and m.user !=None:
+            if m != None and m.user != None:
                 matches.append(Match(m.user))
         return matches
 
     def get_bios(self, matches, cnt):
-        m = [n.bio.strip().rstrip('\n').replace('\n','') for n in matches if
+        m = [n.bio.strip().rstrip('\n').replace('\n', '') for n in matches if
              n != None and n != None and n.bio != None and len(n.bio.split(' ')) > cnt]
         return m
+
+    def calculate_distance_ranking(self, days_pref):
+        self.current_user.preferences['days_per_week'] = days_pref
+        matches_by_distance = sorted(self.matches,
+                                     key=lambda x: x.distance)
+        percentile = (float(days_pref) / 7.0) * 100.0
+        if percentile == 100.0:
+            base_match_value = matches_by_distance[len(matches_by_distance) - 1]
+        elif percentile == 0.0:
+            base_match_value = matches_by_distance[0]
+        else:
+            a = np.array(matches_by_distance)
+            p = np.percentile(a, percentile)  # return 50th percentile, e.g median.
+            print(p)
+            for m in self.matches:
+                m.closeness_to_distance_of_chosen_match(p.distance)
+
 
 if __name__ == '__main__':
     matchmaker = Matchmaker()

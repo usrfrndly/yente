@@ -22,9 +22,12 @@ def index():
 @app.route('/results', methods=['GET', 'POST'])
 def get_results():
     if request.method == 'POST':
-        matchmaker.current_user.preferences['days-per-week'] = request.form['form-days-per-week']
+        # matchmaker.current_user.preferences['days-per-week'] = request.form['form-days-per-week']
+        print("distance pref: " + request.form['form-days-per-week'])
+        matchmaker.calculate_distance_ranking(request.form['form-days-per-week'])
         newlist = sorted(matchmaker.matches,
                          key=lambda x: x.distance)
+
         print(newlist)
         return render_template('results.html', match_distance=newlist)
 
