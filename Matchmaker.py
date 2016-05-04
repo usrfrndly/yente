@@ -1,15 +1,14 @@
 import pynder
 from Match import Match
-from Human import Human
-import json
 from watson_developer_cloud import ToneAnalyzerV3Beta
 import numpy as np
+import pickle
 
 # Unfortunately, we have to do this manually for now...
 # 1. We find the auth_token by going to this address BUTTT:: https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token
 # 2. BUTT... Before the url goes away really fast copy and paste the address bar after you hit enter.
 # . 3. tHE auth token expires
-auth_token = 'EAAGm0PX4ZCpsBACNZB4EZCiJNvZA6ZBiw9zZBF3jqZBDJ37rz6wZBOdTClZAIsVTOKEGnuVorXWdhfJyA1716JkMJ5SVJ7aHgz7qDlJgKO4M7Nbn28M4ZCQ0f8R00ZCDFDZAPXOmP8dHX4R6sIZAU21khK1aFQr0kIZAWhP9AHlUfSREk3nAZDZD'
+auth_token = 'EAAGm0PX4ZCpsBABe4p19yKkDlLERl62zyhv5bdfO9FpziVt4TDeXOx8kNIEfufrj95e8SxssCrEjqN8YwT7xFbg5cGXP0jk8xVnBqRlmKVSTOw8ck6hVi7W3TMtPSFjMh1FrnAccodzDCQv37JWU8dlhQZCLb5dFBdVZCO4twZDZD'
 user = 'jackiehorowitz'
 
 
@@ -17,15 +16,49 @@ class Matchmaker:
     def __init__(self):
         # Get auth token here https://developers.facebook.com/tools/explorer/
         # facebook.get_app_access_token('1679708478963527', '38169c157e0b7f926e8ef5bddf88703b')
-        self.session = pynder.Session(user, auth_token)
+        #self.session = pynder.Session(user, auth_token)
         self.matches = self.update_matches()
-        self.current_user = Human(self.session.profile)
+        #self.profile = self.session.profile
+
+        self.human = self.set_human()
+        #       self.current_user = Human(self.session.profile))
+
+        #print(self.current_user.bio)
+        # self.human = self.set_human()
+        # output2 = open('human_data.pkl', 'wb',  pickle.HIGHEST_PROTOCOL)
+        # pickle.dump(self.human, output2)
+        # output2.close()
+
+    def set_human(self):
+        pkl_file = open('human_data.pkl', 'rb')
+        human = pickle.load(pkl_file)
+        pkl_file.close()
+        print(human)
+        return human
+
+       #  h={}
+       #  h['bio']=self.profile.bio
+       #  h['age_max']= self.profile.age_filter_max
+       #  h['age_min']=self.profile.age_filter_min
+       #  h['create_date'] =self.profile.create_date
+       #  h['distance_filter'] = self.profile.distance_filter
+       #      # 'gender': self.profile.gender,
+       #      # 'interested_in': self.profile.interested_in
+       # # h['name']= self.profile.name
+       #      # 'last_active': self.profile.ping_time,
+       #  h['preferences'] = {}
+       #
+       #  return h
 
     def update_matches(self):
-        matches = []
-        for m in self.session.matches():
-            if m != None and m.user != None:
-                matches.append(Match(m.user))
+        # for m in self.session.matches():
+        #     if m != None and m.user != None:
+        #         matches.append(Match(m.user))
+        # return matches
+        pkl_file = open('company_data.pkl', 'rb')
+        matches = pickle.load(pkl_file)
+        pkl_file.close()
+        print(matches)
         return matches
 
     def get_bios(self, matches, cnt):
@@ -34,7 +67,7 @@ class Matchmaker:
         return m
 
     def calculate_distance_ranking(self, days_pref):
-        self.current_user.preferences['days_per_week'] = days_pref
+        self.human['preferences']['days_per_week'] = days_pref
         matches_by_distance = sorted(self.matches,
                                      key=lambda x: x.distance)
         percentile = (float(days_pref) / 7.0) * 100.0
@@ -43,23 +76,17 @@ class Matchmaker:
         elif percentile == 0.0:
             base_match_value = matches_by_distance[0]
         else:
-            a = np.array(matches_by_distance)
-            p = np.percentile(a, percentile)  # return 50th percentile, e.g median.
-            print(p)
+            print([m.distance for m in matches_by_distance])
+            a = np.array([m.distance for m in matches_by_distance])
+            base_match_value = np.percentile(a, percentile)  # return 50th percentile, e.g median.
+            print(base_match_value)
             for m in self.matches:
-                m.closeness_to_distance_of_chosen_match(p.distance)
+                m.closeness_to_distance_of_chosen_match(base_match_value)
 
 
 if __name__ == '__main__':
     matchmaker = Matchmaker()
-
     print(matchmaker.matches[2].photos)
     print(matchmaker.matches[0].birth_date)
     print(matchmaker.get_bios(matchmaker.matches, 30))
-    tone_analyzer = ToneAnalyzerV3Beta(
-        username='1a60da93-fd3f-4757-822d-a71fa8c126ca',
-        password='ijUcTtmJPra7',
-        version='2016-02-11')
 
-    print(json.dumps(tone_analyzer.tone(text='I am very happy'), indent=2))
-    print(tone_analyzer.tone(text='I am very happy')['document_tone']['tone_categories'][2]['tones'].values())

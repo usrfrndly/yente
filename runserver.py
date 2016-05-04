@@ -1,8 +1,8 @@
 import os
 from flask import Flask, request, render_template, url_for, redirect, session, flash, make_response
 from Matchmaker import Matchmaker
-from authomatic.adapters import WerkzeugAdapter
-from authomatic import Authomatic
+#from authomatic.adapters import WerkzeugAdapter
+#from authomatic import Authomatic
 
 # import config
 app = Flask(__name__)

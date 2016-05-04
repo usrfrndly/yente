@@ -59,7 +59,7 @@
 							</div>
 							<div class="form-bottom">
 								<div class="form-group">
-									<label class="sr-only" for="form-days-per-week">Days Per Week:</label>
+									<label class="sr-only" for="distance-slider">Days Per Week:</label>
 
 									<input id="distance-slider" data-slider-id="distance-slider"
 										   name="form-days-per-week" type="text" data-provide="slider"
@@ -70,21 +70,19 @@
 
 								</div>
 
-								<!--
+
                                                                 <button type="button" class="btn btn-next">Next</button>
 
-                                 -->
-								<button type="submit" class="btn">Sign me up!</button>
 
 							</div>
 						</fieldset>
-						<!--
+
 
                                                 <fieldset>
                                                     <div class="form-top">
                                                         <div class="form-top-left">
                                                             <h3>Step 2 / 3</h3>
-                                                            <p>Set up your account:</p>
+                                                            <p>Which of the following qualities are most important to you in your Tinder match? 1 is the most important and 5 is the least:</p>
                                                         </div>
                                                         <div class="form-top-right">
                                                             <i class="fa fa-key"></i>
@@ -92,6 +90,16 @@
                                                     </div>
                                                     <div class="form-bottom">
                                                         <div class="form-group">
+    <input type='hidden' name='social_rankings' id='social_rankings'>
+<div id="social_rank_container" class="center">
+<ol id="sortable" class="rankings">
+  <li id='ranking_1' class="ranking">Jamie</li>
+  <li id='ranking_2' class="ranking">Joanie</li>
+  <li id='ranking_3' class="ranking">Morley</li>
+  <li id='ranking_4' class="ranking">Frank</li>
+  <li id='ranking_5' class="ranking">Larry</li>
+</ol>
+	</div>
                                                             <label class="sr-only" for="form-email">Email</label>
                                                             <input type="text" name="form-email" placeholder="Email..."
                                                                    class="form-email form-control" id="form-email">
@@ -107,10 +115,12 @@
                                                                    class="form-repeat-password form-control" id="form-repeat-password">
                                                         </div>
                                                         <button type="button" class="btn btn-previous">Previous</button>
-                                                        <button type="button" class="btn btn-next">Next</button>
+                                                        <!--<button type="button" class="btn btn-next">Next</button>-->
+																						<button type="submit" class="btn">Sign me up!</button>
+
                                                     </div>
                                                 </fieldset>
-
+-<!--
                                                 <fieldset>
                                                     <div class="form-top">
                                                         <div class="form-top-left">

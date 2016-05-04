@@ -27,7 +27,7 @@ class Match:
             sign = zodiac.getAstrologySign(zodiac.getMonth(bday), zodiac.getDay(bday))
             return sign
 
-    def update_rank_(self, amount):
+    def update_rank(self, amount):
         self.rank = self.rank + amount
 
     def closeness_to_distance_of_chosen_match(self, match_distance):

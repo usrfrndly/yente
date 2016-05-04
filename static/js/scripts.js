@@ -52,7 +52,10 @@ jQuery(document).ready(function() {
     		$(this).prev().fadeIn();
     	});
     });
-    
+     $( "#sortable" ).sortable({ axis: "y", containment: "#ballot", scroll: false });
+$( "#sortable" ).disableSelection();
+
+
     // submit
     $('.registration-form').on('submit', function(e) {
     	
@@ -65,7 +68,8 @@ jQuery(document).ready(function() {
     			$(this).removeClass('input-error');
     		}
     	});
-    	
+		    $('#social_rankings').val($( "#sortable" ).sortable("serialize"));
+		
     });
     
 //     
