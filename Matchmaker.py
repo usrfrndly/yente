@@ -8,8 +8,7 @@ from watson_developer_cloud import ToneAnalyzerV3Beta
 # 1. We find the auth_token by going to this address BUTTT:: https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token
 # 2. BUTT... Before the url goes away really fast copy and paste the address bar after you hit enter.
 #. 3. tHE auth token expires
-
-auth_token = 'EAAGm0PX4ZCpsBAG7KQAZCyOLTunlxvW3ps09zhPW3gqJnAFXJThMYvszzUm4vtZA4pVXUdMJZAZCV6u1XSUSXWeyVpqIiRwMSXOtfA0SVY1bltXOEzRW9M4ZALQU3GMBkbhWFkq7PG8ZBZANs0qWdGE3SbnDhnDVyKuUyZAge4INYSgZDZD'
+auth_token = 'EAAGm0PX4ZCpsBAOdj5j1xFMYRpt7xOfcNVsSJd5sbR9yXETjw2W6VBaZCU4QQHKz7JZB0paPrsOOTZAKAhuAOwe4sHiBK455NZCaps24sIaZBB78QiUQUlX1NmyQR1GxZBbEX0sPZCmwT808FZAfyZBQYlbDxUroN1bDoKqPsr4hBd4gZDZD'
 user = 'jackiehorowitz'
 
 
