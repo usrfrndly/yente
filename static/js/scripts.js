@@ -52,7 +52,7 @@ jQuery(document).ready(function() {
     		$(this).prev().fadeIn();
     	});
     });
-     $( "#sortable" ).sortable({ axis: "y", containment: "#ballot", scroll: false });
+     $( "#sortable" ).sortable({ axis: "y", containment: "#social_rank_container", scroll: false });
 $( "#sortable" ).disableSelection();
 
 

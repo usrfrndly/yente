@@ -1,8 +1,10 @@
 import pynder
 from Match import Match
+from WatsonMagic import WatsonMagic
 from watson_developer_cloud import ToneAnalyzerV3Beta
 import numpy as np
 import pickle
+import difflib
 
 # Unfortunately, we have to do this manually for now...
 # 1. We find the auth_token by going to this address BUTTT:: https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token
@@ -19,6 +21,7 @@ class Matchmaker:
         #self.session = pynder.Session(user, auth_token)
         self.matches = self.update_matches()
         #self.profile = self.session.profile
+        self.watson =  WatsonMagic()
 
         self.human = self.set_human()
         #       self.current_user = Human(self.session.profile))
@@ -66,6 +69,36 @@ class Matchmaker:
              n != None and n != None and n.bio != None and len(n.bio.split(' ')) > cnt]
         return m
 
+
+    def calculate_social_rankings(self, social_prefs):
+        self.human['preferences']['social_prefs'] = social_prefs
+        m_ranks = []
+        for m in self.matches: 
+            m.clean_bio()
+            if m != None  and m.bio != None and len(m.bio.split(' ')) > 30:
+                social_score = self.watson.get_tone_category_elements('social',m.bio)
+                print(social_score)
+                social_score_sorted = sorted(social_score,
+                                             key=lambda x: x['score'])
+                print("social_score_sorted" + str(social_score_sorted))
+                m_ranks.append({m:social_score_sorted})
+        #see which matches have the most similar lists
+        human_social_prefs_named = [self.watson.SOCIAL_TONES[int(x)-1] for x in social_prefs]
+        m_ranks_named={}
+        for mr in m_ranks:
+            for k, v in mr.items():
+                tone_ranks = []
+                for t in v:
+                    tone_ranks.append(t['tone_name'])
+                m_ranks_named[k] = tone_ranks
+
+     #   m_ranks_named = [[m['tone_name'] for m in list(mr.values())] for mr in m_ranks]
+        for m_named in m_ranks_named:
+            similarity = difflib.SequenceMatcher(None, tuple(human_social_prefs_named), tuple(m_ranks_named[m_named])).ratio()
+            m_named.update_rank('social_prefs',similarity)
+            print(similarity)
+
+
     def calculate_distance_ranking(self, days_pref):
         self.human['preferences']['days_per_week'] = days_pref
         matches_by_distance = sorted(self.matches,
@@ -88,5 +121,8 @@ if __name__ == '__main__':
     matchmaker = Matchmaker()
     print(matchmaker.matches[2].photos)
     print(matchmaker.matches[0].birth_date)
-    print(matchmaker.get_bios(matchmaker.matches, 30))
+    bios = matchmaker.get_bios(matchmaker.matches, 30)
+    #watson.get_tone_category_elements(text=bios[0],category='social')
+
+
 

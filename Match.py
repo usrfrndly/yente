@@ -19,7 +19,8 @@ class Match:
         # user.instagram_photos  # a list of instagram photos with these fields for each photo: 'image','link','thumbnail'
         self.schools = user.schools  # list of schools
         self.jobs = user.jobs  # list of jobs
-        self.rank = 0.0
+        self.total_rank = 0.0
+    
 
     def zodiac_sign(self):
         if (self.birth_date != None):
@@ -27,8 +28,9 @@ class Match:
             sign = zodiac.getAstrologySign(zodiac.getMonth(bday), zodiac.getDay(bday))
             return sign
 
-    def update_rank(self, amount):
-        self.rank = self.rank + amount
+    def update_rank(self, amount,t):
+        self.rank[t] = amount 
+        self.total_rank = self.total_rank + amount
 
     def closeness_to_distance_of_chosen_match(self, match_distance):
         if match_distance == self.distance:
@@ -37,6 +39,12 @@ class Match:
             r = 1.0 - (float(self.distance - match_distance) / float(self.distance))
         else:
             r = 1.0 - (float(match_distance - self.distance) / float(match_distance))
-        self.update_rank(r)
+        self.update_rank(r,'match_distance')
 
         # def get_introversion_level
+
+    def clean_bio(self):
+        self.bio = self.bio.strip().rstrip('\n').replace('\n', '') 
+
+
+
