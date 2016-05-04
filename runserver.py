@@ -29,6 +29,10 @@ def get_results():
         print("social ranks pref: " + str(social_prefs))
         matchmaker.calculate_social_rankings(social_prefs)
         matchmaker.calculate_distance_ranking(request.form['form-days-per-week'])
+
+        print("argument pref: " + request.form['argumentsRadio'])
+        matchmaker.calculate_argument_ranking(request.form['argumentsRadio'])
+
         return render_template('results.html')
 
 

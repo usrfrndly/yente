@@ -5,20 +5,20 @@ from watson_developer_cloud import ToneAnalyzerV3Beta
 import numpy as np
 import pickle
 import difflib
+from operator import itemgetter
 
 # Unfortunately, we have to do this manually for now...
 # 1. We find the auth_token by going to this address BUTTT:: https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token
 # 2. BUTT... Before the url goes away really fast copy and paste the address bar after you hit enter.
 # . 3. tHE auth token expires
-auth_token = 'EAAGm0PX4ZCpsBABe4p19yKkDlLERl62zyhv5bdfO9FpziVt4TDeXOx8kNIEfufrj95e8SxssCrEjqN8YwT7xFbg5cGXP0jk8xVnBqRlmKVSTOw8ck6hVi7W3TMtPSFjMh1FrnAccodzDCQv37JWU8dlhQZCLb5dFBdVZCO4twZDZD'
+auth_token = 'EAAGm0PX4ZCpsBAFs8tBRJZBdIGOE1QlwVCm79i4LqybSHbxq9hK7Gn3D91MenRvSfmQf6rMBQzOHj7jVqauV7EZCWyflIBXl8ez6YyLkPvfF0QIGtriBH12UkTPZCTqlr04atMPTlQk4TsBvhBzeIus5XiXDmO65OecOf8fyugZDZD'
 user = 'jackiehorowitz'
-
 
 class Matchmaker:
     def __init__(self):
         # Get auth token here https://developers.facebook.com/tools/explorer/
         # facebook.get_app_access_token('1679708478963527', '38169c157e0b7f926e8ef5bddf88703b')
-        #self.session = pynder.Session(user, auth_token)
+      #  self.session = pynder.Session(user, auth_token)
         self.matches = self.update_matches()
         #self.profile = self.session.profile
         self.watson =  WatsonMagic()
@@ -26,7 +26,7 @@ class Matchmaker:
         self.human = self.set_human()
         #       self.current_user = Human(self.session.profile))
 
-        #print(self.current_user.bio)
+        # print(self.current_user.bio)
         # self.human = self.set_human()
         # output2 = open('human_data.pkl', 'wb',  pickle.HIGHEST_PROTOCOL)
         # pickle.dump(self.human, output2)
@@ -54,12 +54,15 @@ class Matchmaker:
        #  return h
 
     def update_matches(self):
+        #matches = []
         # for m in self.session.matches():
         #     if m != None and m.user != None:
         #         matches.append(Match(m.user))
         # return matches
+
         pkl_file = open('company_data.pkl', 'rb')
         matches = pickle.load(pkl_file)
+
         pkl_file.close()
         print(matches)
         return matches
@@ -93,9 +96,9 @@ class Matchmaker:
                 m_ranks_named[k] = tone_ranks
 
      #   m_ranks_named = [[m['tone_name'] for m in list(mr.values())] for mr in m_ranks]
-        for m_named in m_ranks_named:
+        for m_named in m_ranks_named.keys():
             similarity = difflib.SequenceMatcher(None, tuple(human_social_prefs_named), tuple(m_ranks_named[m_named])).ratio()
-            m_named.update_rank('social_prefs',similarity)
+            m_named.update_rank(similarity,'social_prefs')
             print(similarity)
 
 
@@ -116,12 +119,50 @@ class Matchmaker:
             for m in self.matches:
                 m.closeness_to_distance_of_chosen_match(base_match_value)
 
+    def calculate_argument_ranking(self, argument_pref):
+        argument_scores = []
+        for m in self.matches:
+            m.clean_bio()
+            if m != None  and m.bio != None and len(m.bio.split(' ')) > 30:
+                social_score_list = self.watson.get_tone_category_elements('social',m.bio)
+                writing_score_list = self.watson.get_tone_category_elements('writing',m.bio)
+
+                print(social_score_list)
+                print(writing_score_list)
+                agreeable_score = 0.0
+                analytic_score = 0.0
+                for social_dct in social_score_list:
+                    if social_dct['tone_name'] == 'Agreeableness':
+                        agreeable_score += social_dct['score']
+                for writing_dct in writing_score_list:
+                    if writing_dct['tone_name'] == 'Analytical':
+                        analytic_score += writing_dct['score']
+                argument_score = (agreeable_score + analytic_score)/2.0
+                argument_scores.append({'match':m,'score':argument_score})
+
+        sorted_agreeable_scores = sorted(argument_scores, key=itemgetter('score'))
+
+        print("sorted_agreeable_scores" + str(sorted_agreeable_scores))
+        a = np.array([s['score'] for s in sorted_agreeable_scores])
+        base_argument_value = np.percentile(a, 50)  # return 50th percentile, e.g median.
+        print(base_argument_value)
+
+        for agree_score in sorted_agreeable_scores:
+            if argument_pref == 'Yes':
+                agree_score['match'].update_rank('agreeable_score',agree_score['score'])
+            elif argument_pref == 'No':
+                agree_score['match'].update_rank('agreeable_score',1.0-agree_score['score'])
+            elif argument_pref == 'Maybe':
+                agree_score['match'].closeness_to_argument_value_match(base_argument_value,agree_score['score'])
+
+
 
 if __name__ == '__main__':
     matchmaker = Matchmaker()
     print(matchmaker.matches[2].photos)
     print(matchmaker.matches[0].birth_date)
-    bios = matchmaker.get_bios(matchmaker.matches, 30)
+    bios = matchmaker.get_bios(matchmaker.matches,10)
+    print(bios)
     #watson.get_tone_category_elements(text=bios[0],category='social')
 
 

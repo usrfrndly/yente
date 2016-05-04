@@ -1,7 +1,8 @@
 /* Credit to http://azmind.com/demo/bootstrap-multi-step-registration-form/ */
 
 jQuery(document).ready(function() {
-	
+		  $.backstretch("static/img/robot_love.jpg");
+
     /*
         Fullscreen background
     */
@@ -75,6 +76,7 @@ $( "#sortable" ).disableSelection();
 //     
 //    $("#distance-slider").slider({
 // 	tooltip: 'always'
-// }); 
+// });
+
     
 });

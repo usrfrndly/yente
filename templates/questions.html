@@ -3,24 +3,24 @@
 
 <!-- Top menu -->
 <nav class="navbar navbar-inverse navbar-no-bg" role="navigation">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="index.html">Bootstrap Multi Step Registration Form Template</a>
-		</div>
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse" id="top-navbar-1">
-			<ul class="nav navbar-nav navbar-right">
-				<li>
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Bootstrap Multi Step Registration Form Template</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="top-navbar-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
 							<span class="li-text">
 								Put some text or
 							</span>
-					<a href="#"><strong>links</strong></a>
+                    <a href="#"><strong>links</strong></a>
 							<span class="li-text">
 								here, or some icons: 
 							</span> 
@@ -30,127 +30,117 @@
 								<a href="#"><i class="fa fa-envelope"></i></a> 
 								<a href="#"><i class="fa fa-skype"></i></a>
 							</span>
-				</li>
-			</ul>
-		</div>
-	</div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
 
 <!-- Top content -->
 <div class="top-content">
 
-	<div class="inner-bg">
-		<div class="container">
+    <div class="inner-bg">
+        <div class="container">
 
-			<div class="row">
-				<div class="col-sm-6 col-sm-offset-3 form-box">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
 
-					<form role="form" action="/results" method="post" class="registration-form">
+                    <form role="form" action="/results" method="post" class="registration-form">
 
-						<fieldset>
-							<div class="form-top">
-								<div class="form-top-left">
-									<h3>Step 1 / 3</h3>
-									<p>How often would you like to see your match per week?</p>
-								</div>
-								<div class="form-top-right">
-									<i class="fa fa-user"></i>
-								</div>
-							</div>
-							<div class="form-bottom">
-								<div class="form-group">
-									<label class="sr-only" for="distance-slider">Days Per Week:</label>
+                        <fieldset>
+                            <div class="form-top">
+                                <div class="form-centeer">
+                                    <h3>Step 1 / 3</h3>
+                                    <p>How often would you like to see your match per week?</p>
+                                </div>
 
-									<input id="distance-slider" data-slider-id="distance-slider"
-										   name="form-days-per-week" type="text" data-provide="slider"
-										   data-slider-tooltip="always" data-slider-min="0"
-										   data-slider-max="7"
-										   data-slider-step="1"
-										   data-slider-value="0"/>
+                            </div>
+                            <div class="form-bottom">
+                                <div class="form-group">
+                                    <label class="inline-label" for="distance-slider">Days Per Week:</label>
 
-								</div>
+                                    <input id="distance-slider" data-slider-id="distance-slider"
+                                           name="form-days-per-week" type="text" data-provide="slider"
+                                           data-slider-tooltip="always" data-slider-min="0"
+                                           data-slider-max="7"
+                                           data-slider-step="1"
+                                           data-slider-value="0"/>
+
+                                </div>
 
 
-                                                                <button type="button" class="btn btn-next">Next</button>
+                                <button type="button" class="btn btn-next">Next</button>
 
 
-							</div>
-						</fieldset>
+                            </div>
+                        </fieldset>
 
 
-                                                <fieldset>
-                                                    <div class="form-top">
-                                                        <div class="form-top-left">
-                                                            <h3>Step 2 / 3</h3>
-                                                            <p>Which of the following qualities are most important to you in your Tinder match? 1 is the most important and 5 is the least:</p>
-                                                        </div>
-                                                        <div class="form-top-right">
-                                                            <i class="fa fa-key"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-bottom">
-                                                        <div class="form-group">
-    <input type='hidden' name='social_rankings' id='social_rankings'>
-<div id="social_rank_container" class="center">
-<ol id="sortable" class="rankings">
-  <li id='ranking_1' class="ranking">{{social_tones[0]}}</li>
-  <li id='ranking_2' class="ranking">{{social_tones[1]}}</li>
-  <li id='ranking_3' class="ranking">{{social_tones[2]}}</li>
-  <li id='ranking_4' class="ranking">{{social_tones[3]}}</li>
-  <li id='ranking_5' class="ranking">{{social_tones[4]}}</li>
-</ol>
-	</div>
+                        <fieldset>
+                            <div class="form-top">
+                                <div class="form-center">
+                                    <h3>Step 2 / 3</h3>
+                                    <p>Which of the following qualities are most important to you in your Tinder match?
+                                        1 is the most important and 5 is the least:</p>
+                                </div>
 
-                                                        <button type="button" class="btn btn-previous">Previous</button>
-                                                        <!--<button type="button" class="btn btn-next">Next</button>-->
-																						<button type="submit" class="btn">Sign me up!</button>
-</div>
-                                                    </div>
-                                                </fieldset>
--<!--
-                                                <fieldset>
-                                                    <div class="form-top">
-                                                        <div class="form-top-left">
-                                                            <h3>Step 3 / 3</h3>
-                                                            <p>Social media profiles:</p>
-                                                        </div>
-                                                        <div class="form-top-right">
-                                                            <i class="fa fa-twitter"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-bottom">
-                                                        <div class="form-group">
-                                                            <label class="sr-only" for="form-facebook">Facebook</label>
-                                                            <input type="text" name="form-facebook" placeholder="Facebook..."
-                                                                   class="form-facebook form-control" id="form-facebook">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="sr-only" for="form-twitter">Twitter</label>
-                                                            <input type="text" name="form-twitter" placeholder="Twitter..."
-                                                                   class="form-twitter form-control" id="form-twitter">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="sr-only" for="form-google-plus">Google plus</label>
-                                                            <input type="text" name="form-google-plus" placeholder="Google plus..."
-                                                                   class="form-google-plus form-control" id="form-google-plus">
-                                                        </div>
-                                                        <button type="button" class="btn btn-previous">Previous</button>
-                                                        <button type="submit" class="btn">Sign me up!</button>
-                                                    </div>
-                                                </fieldset>
-                         -->
+                            </div>
+                            <div class="form-bottom">
+                                <div class="form-group">
+                                    <input type='hidden' name='social_rankings' id='social_rankings'>
+                                    <div id="social_rank_container" class="center">
+                                        <ol id="sortable" class="rankings">
+                                            <li id='ranking_1' class="ranking">{{social_tones[0]}}</li>
+                                            <li id='ranking_2' class="ranking">{{social_tones[1]}}</li>
+                                            <li id='ranking_3' class="ranking">{{social_tones[2]}}</li>
+                                            <li id='ranking_4' class="ranking">{{social_tones[3]}}</li>
+                                            <li id='ranking_5' class="ranking">{{social_tones[4]}}</li>
+                                        </ol>
+                                    </div>
 
-					</form>
+                                    <button type="button" class="btn btn-previous">Previous</button>
+                                    <button type="button" class="btn btn-next">Next</button>
+                                    <!--<button type="submit" class="btn">Sign me up!</button>-->
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div class="form-top">
+                                <div class="form-center">
+                                    <h3>Step 3 / 3</h3>
+                                    <p>Do you enjoy intense intellectual arguments on your Tinder date?? </p>
+                                </div>
 
-				</div>
-			</div>
-		</div>
-	</div>
+                            </div>
+                            <div class="form-bottom">
+                                <div class="form-group">
+
+
+                                        <label style="margin-left:10px" class="radio-inline">
+                                            <input type="radio" name="argumentsRadio" checked="checked"
+                                                   id="inlineRadio1" value="Yes" />Yes, I'd love to get into a heated debate.
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="argumentsRadio" id="inlineRadio2" value="Maybe" />
+                                            Maybe, depends on the person and context.
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="argumentsRadio" id="inlineRadio3" value="No" /> No,I'd rather keep the peace at first!
+                                        </label>
+                                    </div>
+                                        <button type="button" class="btn btn-previous">Previous</button>
+                                        <button type="submit" class="btn">Sign me up!</button>
+                            </div>
+                        </fieldset>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
-
-
-
 
 
 {% endblock %}
