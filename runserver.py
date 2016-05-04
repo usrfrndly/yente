@@ -32,8 +32,8 @@ def get_results():
 
         print("argument pref: " + request.form['argumentsRadio'])
         matchmaker.calculate_argument_ranking(request.form['argumentsRadio'])
-
-        return render_template('results.html')
+        best_matches = matchmaker.get_best_matches()
+        return render_template('results.html',best_matches=best_matches)
 
 
         # @app.route('/login/<provider_name>/', methods=['GET', 'POST'])

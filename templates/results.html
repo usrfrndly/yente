@@ -1,3 +1,77 @@
 {% extends "base.html" %}
 {% block body %}
+<!-- Top menu -->
+<nav class="navbar navbar-inverse navbar-no-bg" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-navbar-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Bootstrap Multi Step Registration Form Template</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="top-navbar-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+							<span class="li-text">
+								Put some text or
+							</span>
+                    <a href="#"><strong>links</strong></a>
+							<span class="li-text">
+								here, or some icons:
+							</span>
+							<span class="li-social">
+								<a href="#"><i class="fa fa-facebook"></i></a>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-envelope"></i></a>
+								<a href="#"><i class="fa fa-skype"></i></a>
+							</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Top content -->
+<div class="top-content">
+
+    <div class="inner-bg">
+        <div class="container">
+   <!-- Projects Row -->
+            {% set count = 0 %}
+
+              {% for match in best_matches %}
+                        {% if match.photos % 3 == 0 %}
+
+            {% if count % 3 == 0 %}
+
+        <div class="row">
+                        {% endif %}
+
+            <div class="col-md-4 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="{{match.photos[0]}}" alt="">
+                </a>
+                <h3>
+                    <a href="#">{{ match.name }}</a>
+                </h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+            </div>
+
+                        {% if count % 3 == 0 %}
+
+        </div>
+            {% endif %}
+            {% set count = count + 1 %}
+            {% endfor %}
+        <!-- /.row -->
+
+              </div>
+    </div>
+
+</div>
+
 {% endblock body %}

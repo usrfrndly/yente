@@ -149,13 +149,18 @@ class Matchmaker:
 
         for agree_score in sorted_agreeable_scores:
             if argument_pref == 'Yes':
-                agree_score['match'].update_rank('agreeable_score',agree_score['score'])
+                agree_score['match'].update_rank(agree_score['score'],'agreeable_score')
             elif argument_pref == 'No':
-                agree_score['match'].update_rank('agreeable_score',1.0-agree_score['score'])
+                agree_score['match'].update_rank(1.0-agree_score['score'], 'agreeable_score')
             elif argument_pref == 'Maybe':
                 agree_score['match'].closeness_to_argument_value_match(base_argument_value,agree_score['score'])
 
-
+    def get_best_matches(self):
+        best_matches = []
+        for m in self.matches:
+            best_matches.append((m.total_rank,m.ranked))
+        best_matches = sorted(best_matches, key=lambda match: match[0],reverse=True)
+        return best_matches
 
 if __name__ == '__main__':
     matchmaker = Matchmaker()
