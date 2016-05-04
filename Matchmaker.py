@@ -37,6 +37,7 @@ class Matchmaker:
 
 if __name__ == '__main__':
     matchmaker = Matchmaker()
+
     print(matchmaker.matches[2].photos)
     print(matchmaker.matches[0].birth_date)
     print(matchmaker.get_bios(matchmaker.matches, 30))
