@@ -206,6 +206,16 @@ form.registration-form fieldset {
 #sortable{
 	background-color:#FFE1E1;
 }
+#matches-container{
+	    background-color: rgba(242, 222, 222, 0.80);
+	padding-top:20px;
+}
+#title{
+	font-family: 'Courgette', cursive;
+	color: #F5B5B5;
+	font-size:30px;
+
+}
 
 /***** Media queries *****/
 

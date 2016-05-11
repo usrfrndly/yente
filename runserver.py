@@ -1,80 +1,56 @@
 import os
-from flask import Flask, request, render_template, url_for, redirect, session, flash, make_response
-from Matchmaker import Matchmaker
+from flask import Flask, request, render_template, url_for, redirect, flash, make_response
+from Matchmaker import Matchmaker as m
 import WatsonMagic
-#from authomatic.adapters import WerkzeugAdapter
-#from authomatic import Authomatic
+from tinder import utils, api
 
-# import config
 app = Flask(__name__)
-# authomatic = Authomatic(config.CONFIG, 'gdfsgdsfgdsf', report_errors=False)
-
-global matchmaker
-matchmaker = Matchmaker()
-
-
+app.secret_key = 'secretKey'
+app.m = m
 @app.route('/')
 def index():
-    return render_template("questions.html",social_tones=WatsonMagic.WatsonMagic.SOCIAL_TONES)
+    return render_template('login.html')
 
 
-# return redirect('https://www.facebook.com/dialog/oauth?client_id=464891386855067&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=basic_info,email,public_profile,user_about_me,user_activities,user_birthday,user_education_history,user_friends,user_interests,user_likes,user_location,user_photos,user_relationship_details&response_type=token')
+@app.route('/login', methods=['GET','POST'])
+def login():
+
+    if request.method=='POST':
+        apid = api.API(debug=True)
+        try:
+            toke = utils.get_tinder_access_token(request.form['username'], request.form['password'])
+            apid.set_auth(request.form['username'], toke)
+            print(apid.authorize())
+            m.update(m,apid=apid)
+            return redirect('/questions')
+        except Exception as e:
+            return render_template('login.html', error=e)
+
+
+
+
+@app.route('/questions')
+def questions():
+    return render_template('questions.html', social_tones=WatsonMagic.WatsonMagic.SOCIAL_TONES)
+
 
 @app.route('/results', methods=['GET', 'POST'])
 def get_results():
+    if request.method == 'GET':
+        return render_template('results.html')
     if request.method == 'POST':
-        # matchmaker.current_user.preferences['days-per-week'] = request.form['form-days-per-week']
         print("distance pref: " + request.form['form-days-per-week'])
-        social_prefs = request.form['social_rankings'].replace('ranking[]=','').split('&')
-        print("social ranks pref: " + str(social_prefs))
-        matchmaker.calculate_social_rankings(social_prefs)
-        matchmaker.calculate_distance_ranking(request.form['form-days-per-week'])
-
+        social_prefs = request.form["social-rankings"].replace('ranking[]=', '').split('&')
+       # print("social ranks pref: " + str(social_prefs))
+        m.calculate_social_rankings(m,social_prefs)
+        m.calculate_distance_ranking(m,request.form['form-days-per-week'])
         print("argument pref: " + request.form['argumentsRadio'])
-        matchmaker.calculate_argument_ranking(request.form['argumentsRadio'])
-        best_matches = matchmaker.get_best_matches()
-        return render_template('results.html',best_matches=best_matches)
+        m.calculate_argument_ranking(m,request.form['argumentsRadio'])
 
+        best_matches = m.get_best_matches(m)
+        return render_template('results.html', bestmatches=best_matches)
 
-        # @app.route('/login/<provider_name>/', methods=['GET', 'POST'])
-# def login(provider_name):
-#     response = make_response()
-#     result = authomatic.login(WerkzeugAdapter(request, response), provider_name)
-#     if result:
-#         if result.error:
-#             return 'Something went wrong: {0}'.format(result.error.message)
-#         if result.user:
-#             result.user.update()
-#         return render_template('login.html', result=result)
-#     return response
-
-@app.route('/pynderbot', methods=['POST'])
-def pynderbot():
-    global userId, accessToken
-    userId = request.form['userId']
-    accessToken = request.form['accessToken']
-
-    print(userId)
-    print(accessToken)
-
-    return render_template("../../../../../Google Drive/Python Apps/LoveBot/templates/pynderbot.html")
-
-
-@app.route('/like')
-def like():
-    print(userId)
-    print(accessToken)
-
-
-# session = pynder.Session(str(userId), str(accessToken))
-# users = session.nearby_users()
-# liked = []
-# for user in users[:5]:
-# 	user.like()
-# 	liked.append(user.name)
-#
-# return render_template("like.html", liked=liked)
 
 if __name__ == '__main__':
     # port = int(os.environ.get("PORT", 5000))
-    app.run(port=8080, debug=True)
+    app.run( debug=True)

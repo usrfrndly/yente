@@ -53,8 +53,7 @@ jQuery(document).ready(function() {
     		$(this).prev().fadeIn();
     	});
     });
-     $( "#sortable" ).sortable({ axis: "y", containment: "#social_rank_container", scroll: false });
-$( "#sortable" ).disableSelection();
+     $( "#sortable" ).sortable({ axis: "y", containment: "#social_rank_container", scroll: false }).disableSelection();
 
 
     // submit
@@ -69,9 +68,15 @@ $( "#sortable" ).disableSelection();
     			$(this).removeClass('input-error');
     		}
     	});
-		    $('#social_rankings').val($( "#sortable" ).sortable("serialize"));
+		    $('#social-rankings').val($( "#sortable" ).sortable("serialize"));
 		
     });
+        //
+        // $('.login-form').on('click', function(e) {
+		// 	//	$('#default').val('\x12\xb2\xd3?\xf4\xf6\x0f\xa1\xe9\r4\x02\xdbM\xc0r')
+		// 	$('.login-form').submit()
+		// })
+
     
 //     
 //    $("#distance-slider").slider({
